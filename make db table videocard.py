@@ -8,15 +8,14 @@ con.execute("""
             (
                 id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
                 name VARCHAR, 
-                type VARCHAR, 
-                efficiency REAL, 
-                architecture VARCHAR, 
+                efficiency REAL,
                 releaseYear INT, 
                 TDP VARCHAR
             );
             """)
 
 cur = con.cursor()
+count = 1
 for i in range(1, 9):
     url = f'https://technical.city/en/video/rating?&pg={i}'  # сюда ссылку на
     # сайт
@@ -37,12 +36,15 @@ for i in range(1, 9):
         for row in table.find_all('tr')[1:]:  # Пропускаем заголовок
             cols = row.find_all('td')
             data = [col.text.strip() for col in cols]
-            print(data)
             try:
-                cur.execute(f"""INSERT INTO videocards (id, name, type, 
-                efficiency, architecture, releaseYear, TDP) VALUES ('{data[0]}', '{data[1]}', '{data[2]}', '{data[3]}', '{data[4]}', '{data[5]}', '{data[6]}')
-                                    """)
-                con.commit()
+                if (data[2] == 'desktop' or data[2] == 'workstation') and \
+                        int(data[5]) > 2009:
+                    cur.execute(f"""INSERT INTO videocards (id, name, efficiency, 
+                    releaseYear, TDP) VALUES ('{count}', 
+                    '{data[1]}', '{data[3]}', '{data[5]}', '{data[6]}')
+                                        """)
+                    con.commit()
+                    count += 1
             except:
                 pass
     else:
