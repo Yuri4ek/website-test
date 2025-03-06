@@ -18,7 +18,7 @@ command = "start"
 while command != "stop":
     print("Напишите 'stop' для остановки")
     print("Напишите для вывода таблицы : "
-          "'print <название таблицы> <ключ (по необходимости)>'")
+          "'print <название таблицы> <ключ (название столбца,значение)])>'")
     print("Напишите для выбора комплектующего : "
           "'get <название таблицы> <id комплектующего>'")
 
@@ -28,6 +28,8 @@ while command != "stop":
 
     if commandName == "print":
         if key:
+            columnName, value = key.split(',')
+            key = [[columnName, value]]
             pprint(getSortedValuesFromTable(cursor, tableName, key))
         else:
             pprint(getValuesFromTable(cursor, tableName))
