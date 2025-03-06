@@ -14,13 +14,26 @@ print('Начало')
 '''pprint(getSortedValuesFromTable(cursor, 'processors',
                                 [['socket', 'FCLGA1851']]))'''
 
-print("Напишите что-нибудь для начала")
-while (command := input()) != "stop":
+command = "start"
+while command != "stop":
     print("Напишите 'stop' для остановки")
-    print("Напишите 'print <название таблицы> <ключ (по необходимости)>' "
-          "для вывода таблицы")
-    print("Напишите 'get <название таблицы> <id комплектующего> "
-          "для выбора комплектующего'")
+    print("Напишите для вывода таблицы : "
+          "'print <название таблицы> <ключ (по необходимости)>'")
+    print("Напишите для выбора комплектующего : "
+          "'get <название таблицы> <id комплектующего>'")
+
+    command = input()
+    commandName, tableName, key = command.split() if len(command.split()) == 3 \
+        else command.split() + [None]
+
+    if commandName == "print":
+        if key:
+            pprint(getSortedValuesFromTable(cursor, tableName, key))
+        else:
+            pprint(getValuesFromTable(cursor, tableName))
+    elif commandName == "get":
+        key = [["id", key]]
+        print(*getSortedValuesFromTable(cursor, tableName, key))
 
 connection.close()
 
