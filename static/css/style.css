@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #333;
+    padding: 15px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar .nav-left a {
+    color: white;
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 18px;
+}
+.navbar .nav-left a:hover {
+    color: #ddd;
+}
+.navbar .nav-right {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+.navbar .nav-right a, .navbar .nav-right span {
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 18px;
+}
+.navbar .nav-right a:hover {
+    color: #ddd;
+}
+.navbar .nav-right .btn {
+    background-color: #555;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-left: 10px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+.navbar .nav-right .btn:hover {
+    background-color: #666;
+}
+
+/* Main container */
+.container {
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: calc(100vh - 80px);
+    background-color: #f0f0f0;
+}
+
+/* Blocks */
+.block {
+    width: 150px;
+    padding: 18.75px;
+    border: 2px solid #000;
+    background-color: #fff;
+    margin: 12.5px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 20px;
+}
+.block:hover {
+    background-color: #e0e0e0;
+}
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 12.5px 0;
+    position: relative;
+}
+
+/* Motherboard block (3x width) */
+.motherboard {
+    width: 488px;
+    padding: 18.75px;
+    border: 2px solid #000;
+    background-color: #fff;
+    margin: 12.5px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 20px;
+}
+.motherboard:hover {
+    background-color: #e0e0e0;
+}
+
+/* Adjust CPU and CPU Cooler to be centered above Motherboard */
+.cpu-row {
+    display: flex;
+    justify-content: center;
+    width: 488px;
+}
+.cpu-block {
+    margin: 12.5px 0;
+}
+
+/* Adjust Storage, PSU, and Case to be under Motherboard */
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    width: 488px;
+}
+
+/* Modal window */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    text-align: center;
+    position: relative;
+}
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
