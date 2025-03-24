@@ -13,7 +13,7 @@ user = {
 
 @app.route('/')
 def home():
-    return render_template('test.html', user=user)
+    return render_template('main.html', user=user)
 
 
 if __name__ == '__main__':
