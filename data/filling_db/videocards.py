@@ -1,7 +1,12 @@
 import sqlite3
 
-# Полный список видеокарт с добавлением валюты 'USD'
-data = [
+con = sqlite3.connect("../../db/components.db")
+cur = con.cursor()
+cur.execute("DELETE FROM videocards")
+con.commit()
+con.close()
+
+videocards = [
     [1, "GeForce RTX 5090 D", 100.00, 2025, 575, 2499.99, "USD"],
     [2, "GeForce RTX 5090", 87.72, 2025, 575, 2299.99, "USD"],
     [3, "GeForce RTX 4090", 85.93, 2022, 450, 1599.99, "USD"],
@@ -78,7 +83,8 @@ data = [
     [74, "Radeon RX 6750 GRE", 37.49, 2023, 250, 319.99, "USD"],
     [75, "Radeon RX 6750 GRE 10 GB", 37.49, 2023, 170, 299.99, "USD"],
     [76, "Radeon RX 7600", 37.15, 2023, 165, 269.99, "USD"],
-    [77, "Radeon RX 5700 XT 50th Anniversary", 36.91, 2019, 225, 449.99, "USD"],
+    [77, "Radeon RX 5700 XT 50th Anniversary", 36.91, 2019, 225, 449.99,
+     "USD"],
     [78, "GeForce RTX 2060 Super", 36.87, 2019, 175, 349.99, "USD"],
     [79, "Radeon RX 6600 XT", 36.86, 2021, 160, 379.99, "USD"],
     [80, "Radeon RX 5700 XT", 36.75, 2019, 225, 399.99, "USD"],
@@ -230,7 +236,8 @@ data = [
     [226, "UHD Graphics 730", 3.58, 2023, 15, 39.99, "USD"],
     [227, "Radeon 540", 3.14, 2017, 50, 69.99, "USD"],
     [228, "Radeon 550X", 3.13, 2019, 50, 79.99, "USD"],
-    [229, "UHD Graphics Xe 750 32EUs (Rocket Lake)", 2.86, 2021, None, 39.99, "USD"],
+    [229, "UHD Graphics Xe 750 32EUs (Rocket Lake)", 2.86, 2021, None, 39.99,
+     "USD"],
     [230, "GeForce GT 1010", 2.70, 2021, 30, 69.99, "USD"],
     [231, "HD Graphics P630", 2.68, 2016, 15, 29.99, "USD"],
     [232, "UHD Graphics 630", 2.67, 2017, 15, 29.99, "USD"],
@@ -238,31 +245,26 @@ data = [
     [234, "Radeon R5 430 OEM", 2.31, 2016, 50, 59.99, "USD"]
 ]
 
-# Создание SQLite базы данных и таблицы
-conn = sqlite3.connect('components.db')
-cursor = conn.cursor()
+from data import db_session
+from data.videocards import Videocards
 
-# Создание таблицы с новым столбцом для валюты
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS videocards (
-        id INTEGER PRIMARY KEY,
-        name TEXT,
-        efficiency REAL,
-        release_year INTEGER,
-        tdp INTEGER,
-        price REAL,
-        currency TEXT
-    )
-''')
+db_session.global_init("../../db/components.db")
 
-# Вставка данных в таблицу
-cursor.executemany('''
-    INSERT INTO videocards (id, name, efficiency, release_year, tdp, price, currency)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-''', data)
+db_sess = db_session.create_session()
+for curent_videocard in videocards:
+    videocard = Videocards()
+    videocard.name = curent_videocard[1]
+    videocard.efficiency = curent_videocard[2]
+    videocard.release_year = curent_videocard[3]
+    videocard.tdp = curent_videocard[4]
+    videocard.price = curent_videocard[5]
+    videocard.currency = curent_videocard[6]
 
-# Сохранение изменений и закрытие соединения
-conn.commit()
-conn.close()
+    db_sess.add(videocard)
+db_sess.commit()
 
-print("Данные успешно записаны в components.db с указанием валюты 'USD'")
+db_sess = db_session.create_session()
+current_videocards = db_sess.query(Videocards).all()
+
+for videocard in current_videocards:
+    print(videocard.name)

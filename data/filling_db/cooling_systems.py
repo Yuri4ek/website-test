@@ -1,22 +1,24 @@
 import sqlite3
 
-# Список сокетов
-sockets = [
-    "AMD Socket sTR5", "AMD Socket TR4", "FCLGA1851", "AMD Socket AM5",
-    "FCLGA1700",
-    "AMD Socket AM4", "FCLGA2066", "AMD Socket SP3r2", "FCLGA1200",
-    "FCBGA1787",
-    "AMD Socket FP7", "FCLGA1151", "FCLGA2011", "AMD Socket FP6", "FCBGA1440",
-    "AMD Socket AM3+", "AMD Socket FP5", "FCLGA1150", "FCBGA1364", "FCLGA1366",
-    "FCLGA1155", "AMD Socket AM3", "BGA1338", "AMD Socket FM2+",
-    "AMD Socket FM1",
-    "FCLGA1156", "FCBGA1090", "FCBGA1296", "BGA1493", "AMD Socket AM1",
-    "FCBGA1170",
-    "LGA775", "FT1 BGA 413-Ball"
-]
+con = sqlite3.connect("../../db/components.db")
+cur = con.cursor()
+cur.execute("DELETE FROM processors")
+con.commit()
+con.close()
 
-# Данные кулеров
-coolers_data = [
+current_sockets = {'AMD Socket sTR5': 1, 'AMD Socket TR4': 2, 'FCLGA1851': 3,
+                   'AMD Socket AM5': 4, 'FCLGA1700': 5, 'AMD Socket AM4': 6,
+                   'FCLGA2066': 7, 'AMD Socket SP3r2': 8, 'FCLGA1200': 9,
+                   'FCBGA1787': 10, 'AMD Socket FP7': 11, 'FCLGA1151': 12,
+                   'FCLGA2011': 13, 'AMD Socket FP6': 14, 'FCBGA1440': 15,
+                   'AMD Socket AM3+': 16, 'AMD Socket FP5': 17,
+                   'FCLGA1150': 18, 'FCBGA1364': 19, 'FCLGA1366': 20,
+                   'FCLGA1155': 21, 'AMD Socket AM3': 22, 'BGA1338': 23,
+                   'AMD Socket FM2+': 24, 'AMD Socket FM1': 25,
+                   'FCLGA1156': 26, 'FCBGA1090': 27, 'FCBGA1296': 28,
+                   'BGA1493': 29, 'AMD Socket AM1': 30, 'FCBGA1170': 31,
+                   'LGA775': 32, 'FT1 BGA 413-Ball': 33}
+coolers = [
     # AMD Socket sTR5
     {"id": 1, "name": "Noctua NH-D9 TR5-SP6", "socket": "AMD Socket sTR5",
      "tdp": 200, "type": "Air", "price": 119.90, "currency": "USD"},
@@ -168,40 +170,28 @@ coolers_data = [
      "tdp": 25, "type": "Air", "price": None, "currency": "USD"}
 ]
 
-# Подключение к базе данных SQLite (создаст файл cooling_systems.db, если его нет)
-conn = sqlite3.connect('components.db')
-cursor = conn.cursor()
+from data import db_session
+from data.cooling_systems import CoolingSystems
 
-# Создание таблицы
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS coolingsystems (
-        id INTEGER PRIMARY KEY,
-        name TEXT,
-        socket TEXT NOT NULL,
-        tdp INTEGER,
-        type TEXT,
-        price REAL,
-        currency TEXT
-    )
-''')
+db_session.global_init("../../db/components.db")
 
-# Вставка данных
-for cooler in coolers_data:
-    cursor.execute('''
-        INSERT INTO coolingsystems (id, name, socket, tdp, type, price, currency)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ''', (
-        cooler['id'],
-        cooler['name'],
-        cooler['socket'],
-        cooler['tdp'],
-        cooler['type'],
-        cooler['price'],
-        cooler['currency']
-    ))
+db_sess = db_session.create_session()
+for current_cooler in coolers:
+    cooler = CoolingSystems()
+    cooler.name = current_cooler["name"]
+    try:
+        cooler.socket_id = current_sockets[current_cooler["socket"]]
+    except:
+        cooler.socket_id = None
+    cooler.tdp = current_cooler["tdp"]
+    cooler.type = current_cooler["type"]
+    cooler.price = current_cooler["price"]
+    cooler.currency = current_cooler["currency"]
+    db_sess.add(cooler)
+db_sess.commit()
 
-# Сохранение изменений и закрытие соединения
-conn.commit()
-conn.close()
+db_sess = db_session.create_session()
+current_coolers = db_sess.query(CoolingSystems).all()
 
-print("База данных 'cooling_systems.db' успешно создана и заполнена!")
+for current_cooler in current_coolers:
+    print(current_cooler.name)

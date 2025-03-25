@@ -1,7 +1,12 @@
 import sqlite3
 
-# Данные о блоках питания
-data = [
+con = sqlite3.connect("../../db/components.db")
+cur = con.cursor()
+cur.execute("DELETE FROM power_supplies")
+con.commit()
+con.close()
+
+power_supplies = [
     [1, 'Aerocool VX PLUS 350w', 'ATX', '350 W', 35, 'USD'],
     [2, 'Chieftec SMART 400w', 'ATX', '400 W', 40, 'USD'],
     [3, 'Chieftec COMPACT 450W', 'SFX', '450 W', 50, 'USD'],
@@ -55,14 +60,16 @@ data = [
     [51, 'EVGA SuperNOVA 650 GA', 'ATX', '650 W', 90, 'USD'],
     [52, 'FSP HYDRO G PRO 650w', 'ATX', '650 W', 95, 'USD'],
     [53, 'Seasonic Focus GM-650', 'ATX', '650 W', 100, 'USD'],
-    [54, 'Super Flower Leadex Gold III 650W Rev.3', 'ATX', '650 W', 105, 'USD'],
+    [54, 'Super Flower Leadex Gold III 650W Rev.3', 'ATX', '650 W', 105,
+     'USD'],
     [55, 'Thermaltake Smart PRO RGB 650w', 'ATX', '650 W', 85, 'USD'],
     [56, 'Xilence Gaming Series XN320', 'ATX', '650 W', 75, 'USD'],
     [57, 'Aerocool KCAS PLUS 700W', 'ATX', '700 W', 65, 'USD'],
     [58, 'Deepcool DA700', 'ATX', '700 W', 70, 'USD'],
     [59, 'Thermaltake Toughpower GX1 700w', 'ATX', '700 W', 90, 'USD'],
     [60, '1STPLAYER SFX PLATINUM 750w', 'SFX', '750 W', 160, 'USD'],
-    [61, 'Asus ROG LOKI SFX-L 750 Platinum GAMING', 'SFX-L', '750 W', 180, 'USD'],
+    [61, 'Asus ROG LOKI SFX-L 750 Platinum GAMING', 'SFX-L', '750 W', 180,
+     'USD'],
     [62, 'Cooler Master V750 SFX GOLD', 'SFX', '750 W', 140, 'USD'],
     [63, 'Corsair SF750 Platinum', 'SFX', '750 W', 170, 'USD'],
     [64, 'EVGA SuperNOVA 750 GM', 'SFX', '750 W', 135, 'USD'],
@@ -88,8 +95,10 @@ data = [
     [84, 'Xilence Perfomance X XN073 750w', 'ATX', '750 W', 85, 'USD'],
     [85, 'Silverstone SX800-LTI', 'SFX-L', '800 W', 190, 'USD'],
     [86, 'Cougar GX 800W', 'ATX', '800 W', 100, 'USD'],
-    [87, 'Asus ROG LOKI SFX-L 850 Platinum GAMING', 'SFX-L', '850 W', 200, 'USD'],
-    [88, 'Asus ROG LOKI SFX-L 850W Platinum White Edition', 'SFX-L', '850 W', 210, 'USD'],
+    [87, 'Asus ROG LOKI SFX-L 850 Platinum GAMING', 'SFX-L', '850 W', 200,
+     'USD'],
+    [88, 'Asus ROG LOKI SFX-L 850W Platinum White Edition', 'SFX-L', '850 W',
+     210, 'USD'],
     [89, 'Cooler Master V850 SFX GOLD', 'SFX', '850 W', 150, 'USD'],
     [90, 'Corsair SF850L', 'SFX-L', '850 W', 180, 'USD'],
     [91, 'EVGA SuperNOVA 850 GM', 'SFX', '850 W', 145, 'USD'],
@@ -108,16 +117,19 @@ data = [
     [104, 'MSI MAG A850GL PCIE5 WHITE', 'ATX', '850 W', 145, 'USD'],
     [105, 'Seasonic Focus PX-850', 'ATX', '850 W', 150, 'USD'],
     [106, 'Silverstone Extreme 850R Platinum', 'SFX', '850 W', 200, 'USD'],
-    [107, 'Super Flower Leadex VI Platinum Pro 850W', 'ATX', '850 W', 140, 'USD'],
+    [107, 'Super Flower Leadex VI Platinum Pro 850W', 'ATX', '850 W', 140,
+     'USD'],
     [108, 'Thermaltake Toughpower GF1 ARGB 850w', 'ATX', '850 W', 135, 'USD'],
     [109, 'Thermaltake Toughpower SFX 850w', 'SFX', '850 W', 160, 'USD'],
-    [110, 'Asus ROG LOKI SFX-L 1000 Platinum GAMING', 'SFX-L', '1000 W', 230, 'USD'],
+    [110, 'Asus ROG LOKI SFX-L 1000 Platinum GAMING', 'SFX-L', '1000 W', 230,
+     'USD'],
     [111, 'Corsair SF1000L', 'SFX-L', '1000 W', 200, 'USD'],
     [112, 'Silverstone SX1000 Platinum', 'SFX-L', '1000 W', 220, 'USD'],
     [113, 'Silverstone SX1000R Platinum', 'SFX-L', '1000 W', 225, 'USD'],
     [114, 'Thermaltake Toughpower SFX 1000w', 'SFX-L', '1000 W', 190, 'USD'],
     [115, '1STPLAYER NGDP ATX 3.1 GOLD 1000W', 'ATX', '1000 W', 150, 'USD'],
-    [116, 'Asus ROG STRIX 1000 Gold Aura Edition', 'ATX', '1000 W', 180, 'USD'],
+    [116, 'Asus ROG STRIX 1000 Gold Aura Edition', 'ATX', '1000 W', 180,
+     'USD'],
     [117, 'be quiet! Straight power 12 1000W', 'ATX', '1000 W', 160, 'USD'],
     [118, 'Corsair RM1000x SHIFT', 'ATX', '1000 W', 170, 'USD'],
     [119, 'EVGA SuperNOVA 1000 G3 2018', 'ATX', '1000 W', 160, 'USD'],
@@ -130,10 +142,13 @@ data = [
     [126, 'Xilence Perfomance X XN076 1050w', 'ATX', '1050 W', 160, 'USD'],
     [127, 'Cooler Master V1100 SFX PLATINUM', 'SFX', '1100 W', 250, 'USD'],
     [128, 'Asus ROG LOKI SFX-L 1200W Titanium', 'SFX-L', '1200 W', 300, 'USD'],
-    [129, 'be quiet! Straight Power 11 1200W Platinum', 'ATX', '1200 W', 200, 'USD'],
+    [129, 'be quiet! Straight Power 11 1200W Platinum', 'ATX', '1200 W', 200,
+     'USD'],
     [130, 'Deepcool PX1200G WH', 'ATX', '1200 W', 190, 'USD'],
-    [131, 'Super Flower Leadex SE Platinum 1200W', 'ATX', '1200 W', 195, 'USD'],
-    [132, 'Thermaltake Toughpower PF3 1200W Platinum ATX 3.0', 'ATX', '1200 W', 210, 'USD'],
+    [131, 'Super Flower Leadex SE Platinum 1200W', 'ATX', '1200 W', 195,
+     'USD'],
+    [132, 'Thermaltake Toughpower PF3 1200W Platinum ATX 3.0', 'ATX', '1200 W',
+     210, 'USD'],
     [133, 'Segotep GM1250W ATX 3.0', 'ATX', '1250 W', 180, 'USD'],
     [134, 'Cooler Master V1300 SFX PLATINUM', 'SFX', '1300 W', 280, 'USD'],
     [135, 'Cooler Master V1300 Platinum', 'ATX', '1300 W', 220, 'USD'],
@@ -143,30 +158,24 @@ data = [
     [139, 'Cooler Master M2000 Platinum', 'ATX', '2000 W', 350, 'USD']
 ]
 
-# Подключение к базе данных SQLite (если базы нет, она будет создана)
-conn = sqlite3.connect('components.db')
-cursor = conn.cursor()
+from data import db_session
+from data.power_supplies import PowerSupplies
 
-# Создание таблицы
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS powersupplies (
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        form_factor TEXT NOT NULL,
-        power TEXT NOT NULL,
-        price REAL NOT NULL,
-        currency TEXT NOT NULL
-    )
-''')
+db_session.global_init("../../db/components.db")
 
-# Вставка данных в таблицу
-cursor.executemany('''
-    INSERT INTO powersupplies (id, name, form_factor, power, price, currency)
-    VALUES (?, ?, ?, ?, ?, ?)
-''', data)
+db_sess = db_session.create_session()
+for power_supplie in power_supplies:
+    powerSupplie = PowerSupplies()
+    powerSupplie.name = power_supplie[1]
+    powerSupplie.form_factor = power_supplie[2]
+    powerSupplie.power = int(power_supplie[3].split(' ')[0])
+    powerSupplie.price = power_supplie[4]
+    powerSupplie.currency = power_supplie[5]
+    db_sess.add(powerSupplie)
+db_sess.commit()
 
-# Сохранение изменений и закрытие соединения
-conn.commit()
-conn.close()
+db_sess = db_session.create_session()
+current_powerSupplies = db_sess.query(PowerSupplies).all()
 
-print("Данные успешно записаны в базу данных 'power_supplies.db'")
+for current_powerSupplie in current_powerSupplies:
+    print(current_powerSupplie.name)

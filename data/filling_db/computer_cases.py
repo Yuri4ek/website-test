@@ -1,7 +1,12 @@
 import sqlite3
 
-# Данные о компьютерных корпусах
-case_data = [
+con = sqlite3.connect("../../db/components.db")
+cur = con.cursor()
+cur.execute("DELETE FROM computer_cases")
+con.commit()
+con.close()
+
+cases = [
     # Full Tower
     ("Corsair Obsidian 1000D", "Full Tower", 550.00, "USD"),
     ("Be Quiet! Dark Base Pro 901", "Full Tower", 300.00, "USD"),
@@ -48,40 +53,23 @@ case_data = [
     ("SilverStone PS15", "Micro-ATX", 70.00, "USD"),
 ]
 
-# Подключение к базе данных SQLite
-try:
-    conn = sqlite3.connect('components.db')
-    cursor = conn.cursor()
+from data import db_session
+from data.computer_cases import ComputerCases
 
-    # Создание таблицы
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS computercases (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            form_factor TEXT NOT NULL,
-            price REAL NOT NULL,
-            currency TEXT NOT NULL
-        )
-    ''')
+db_session.global_init("../../db/components.db")
 
-    # SQL-запрос для вставки данных
-    insert_query = '''
-        INSERT INTO computercases (name, form_factor, price, currency)
-        VALUES (?, ?, ?, ?)
-    '''
+db_sess = db_session.create_session()
+for case in cases:
+    computerCase = ComputerCases()
+    computerCase.name = case[0]
+    computerCase.form_factor = case[1]
+    computerCase.price = case[2]
+    computerCase.currency = case[3]
+    db_sess.add(computerCase)
+db_sess.commit()
 
-    # Вставка данных
-    cursor.executemany(insert_query, case_data)
+db_sess = db_session.create_session()
+current_computerCases = db_sess.query(ComputerCases).all()
 
-    # Подтверждение изменений
-    conn.commit()
-    print("Данные успешно записаны в таблицу computer_cases!")
-
-except sqlite3.Error as e:
-    print(f"Ошибка при работе с базой данных: {e}")
-finally:
-    # Закрытие соединения
-    if cursor:
-        cursor.close()
-    if conn:
-        conn.close()
+for current_computerCase in current_computerCases:
+    print(current_computerCase.name)

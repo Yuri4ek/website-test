@@ -1,7 +1,12 @@
 import sqlite3
 
-# Данные о накопителях
-storage_data = [
+con = sqlite3.connect("../../db/components.db")
+cur = con.cursor()
+cur.execute("DELETE FROM storage_devices")
+con.commit()
+con.close()
+
+storages = [
     # HDD
     ("Seagate BarraCuda 4TB", "HDD", 4000, "3.5", 80.00, "USD"),
     ("Western Digital Blue 2TB", "HDD", 2000, "3.5", 55.00, "USD"),
@@ -52,42 +57,24 @@ storage_data = [
     ("Crucial P5 Plus 2TB", "NVMe", 2000, "M.2", 150.00, "USD"),
 ]
 
-# Подключение к базе данных SQLite
-try:
-    conn = sqlite3.connect('components.db')
-    cursor = conn.cursor()
+from data import db_session
+from data.storage_devices import StorageDevices
 
-    # Создание таблицы
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS storagedevices (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            storage_type TEXT NOT NULL,
-            capacity_gb INTEGER NOT NULL,
-            form_factor TEXT,
-            price REAL NOT NULL,
-            currency TEXT NOT NULL
-        )
-    ''')
+db_session.global_init("../../db/components.db")
 
-    # SQL-запрос для вставки данных
-    insert_query = '''
-        INSERT INTO storagedevices (name, storage_type, capacity_gb, form_factor, price, currency)
-        VALUES (?, ?, ?, ?, ?, ?)
-    '''
+db_sess = db_session.create_session()
+for storage in storages:
+    storageDevice = StorageDevices()
+    storageDevice.name = storage[0]
+    storageDevice.capacity_gb = storage[2]
+    storageDevice.storage_type = storage[1]
+    storageDevice.price = storage[4]
+    storageDevice.currency = storage[5]
+    db_sess.add(storageDevice)
+db_sess.commit()
 
-    # Вставка данных
-    cursor.executemany(insert_query, storage_data)
+db_sess = db_session.create_session()
+current_storageDevices = db_sess.query(StorageDevices).all()
 
-    # Подтверждение изменений
-    conn.commit()
-    print("Данные успешно записаны в таблицу storage_devices!")
-
-except sqlite3.Error as e:
-    print(f"Ошибка при работе с базой данных: {e}")
-finally:
-    # Закрытие соединения
-    if cursor:
-        cursor.close()
-    if conn:
-        conn.close()
+for current_storageDevice in current_storageDevices:
+    print(current_storageDevice.name)

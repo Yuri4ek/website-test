@@ -1,7 +1,24 @@
 import sqlite3
 
-# Полный список процессоров с добавлением валюты 'USD'
-data = [
+con = sqlite3.connect("../../db/components.db")
+cur = con.cursor()
+cur.execute("DELETE FROM processors")
+con.commit()
+con.close()
+
+current_sockets = {'AMD Socket sTR5': 1, 'AMD Socket TR4': 2, 'FCLGA1851': 3,
+                   'AMD Socket AM5': 4, 'FCLGA1700': 5, 'AMD Socket AM4': 6,
+                   'FCLGA2066': 7, 'AMD Socket SP3r2': 8, 'FCLGA1200': 9,
+                   'FCBGA1787': 10, 'AMD Socket FP7': 11, 'FCLGA1151': 12,
+                   'FCLGA2011': 13, 'AMD Socket FP6': 14, 'FCBGA1440': 15,
+                   'AMD Socket AM3+': 16, 'AMD Socket FP5': 17,
+                   'FCLGA1150': 18, 'FCBGA1364': 19, 'FCLGA1366': 20,
+                   'FCLGA1155': 21, 'AMD Socket AM3': 22, 'BGA1338': 23,
+                   'AMD Socket FM2+': 24, 'AMD Socket FM1': 25,
+                   'FCLGA1156': 26, 'FCBGA1090': 27, 'FCBGA1296': 28,
+                   'BGA1493': 29, 'AMD Socket AM1': 30, 'FCBGA1170': 31,
+                   'LGA775': 32, 'FT1 BGA 413-Ball': 33}
+processors = [
     [1, "Ryzen Threadripper 7980X", "AMD Socket sTR5", 86.11, "64 / 128", 2023,
      350, 5000, "USD"],
     [2, "Ryzen Threadripper 7970X", "AMD Socket sTR5", 61.77, "32 / 64", 2023,
@@ -557,34 +574,30 @@ data = [
      "USD"]
 ]
 
-# Создание SQLite базы данных и таблицы
-conn = sqlite3.connect('components.db')
-cursor = conn.cursor()
+from data import db_session
+from data.processors import Processors
 
-# Создание таблицы с новым столбцом для валюты
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS processors (
-        id INTEGER PRIMARY KEY,
-        name TEXT,
-        socket TEXT,
-        efficiency REAL,
-        cores_threads TEXT,
-        release_year INTEGER,
-        tdp INTEGER,
-        price REAL,
-        currency TEXT
-    )
-''')
+db_session.global_init("../../db/components.db")
 
-# Вставка данных в таблицу
-cursor.executemany('''
-    INSERT INTO processors (id, name, socket, efficiency, cores_threads,
-    release_year, tdp, price, currency)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-''', data)
+db_sess = db_session.create_session()
+for current_processor in processors:
+    processor = Processors()
+    processor.name = current_processor[1]
+    try:
+        processor.socket_id = current_sockets[current_processor[2]]
+    except:
+        processor.socket_id = None
+    processor.efficiency = current_processor[3]
+    processor.cores_threads = current_processor[4]
+    processor.release_year = current_processor[5]
+    processor.tdp = current_processor[6]
+    processor.price = current_processor[7]
+    processor.currency = current_processor[8]
+    db_sess.add(processor)
+db_sess.commit()
 
-# Сохранение изменений и закрытие соединения
-conn.commit()
-conn.close()
+db_sess = db_session.create_session()
+processors = db_sess.query(Processors).all()
 
-print("Данные успешно записаны в components.db с указанием валюты 'USD'")
+for processor in processors:
+    print(processor.name)

@@ -10,9 +10,9 @@
     <!-- Navbar -->
     <div class="navbar">
         <div class="nav-left">
-            <a href="#home">Конфигурация</a>
+            <a href="/">Конфигурация</a>
             <div class="dropdown">
-                <a href="#" class="dropbtn">Комплектующие</a>
+                <a href="" class="dropbtn">Комплектующие</a>
                 <div class="dropdown-content">
                     <a href="/components/cpu">Процессоры</a>
                     <a href="/components/gpu">Видеокарты</a>
@@ -24,14 +24,14 @@
                     <a href="/components/cooling">Охлаждение процессора</a>
                 </div>
             </div>
-            <a href="#builds">Сборки</a>
+            <a href="builds">Сборки</a>
         </div>
         <div class="nav-right">
             {% if user.is_logged_in %}
-                <a href="#profile" class="btn">{{ user.username }}</a>
+                <a href="profile" class="btn">{{ user.username }}</a>
             {% else %}
-                <a href="#login" class="btn">Войти</a>
-                <a href="#register" class="btn">Зарегистрироваться</a>
+                <a href="login" class="btn">Войти</a>
+                <a href="register" class="btn">Зарегистрироваться</a>
             {% endif %}
         </div>
     </div>

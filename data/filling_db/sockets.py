@@ -1,4 +1,12 @@
-[
+import sqlite3
+
+con = sqlite3.connect("../../db/components.db")
+cur = con.cursor()
+cur.execute("DELETE FROM sockets")
+con.commit()
+con.close()
+
+current_sockets = [
     "AMD Socket sTR5",
     "AMD Socket TR4",
     "FCLGA1851",
@@ -33,3 +41,20 @@
     "LGA775",
     "FT1 BGA 413-Ball"
 ]
+
+from data import db_session
+from data.sockets import Sockets
+
+db_session.global_init("../../db/components.db")
+
+db_sess = db_session.create_session()
+for current_socket in current_sockets:
+    socket = Sockets()
+    socket.name = current_socket
+    db_sess.add(socket)
+db_sess.commit()
+
+sockets = db_sess.query(Sockets).all()
+
+for socket in sockets:
+    print(socket.name)
