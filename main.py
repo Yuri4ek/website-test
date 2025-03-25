@@ -1,7 +1,13 @@
 from flask import Flask, render_template
+from sqlalchemy import inspect
+from data import (db_session, computer_cases, cooling_systems, memory_types,
+                  motherboards, power_supplies, processors, ram_modules,
+                  sockets, storage_devices, videocards)
 
 app = Flask(__name__)
+db_session.global_init("db/components.db")
 
+# надо бд сделать и удалить
 # Имитация данных пользователя (в реальном приложении это будет из базы данных)
 # Для теста можно менять значения
 user = {
@@ -16,20 +22,32 @@ def home():
     return render_template('main.html', user=user)
 
 
-@app.route('/components/<components_id>')
-def show_components(components_id):
-    # Пример данных
-    table_headers = ["ID", "Имя", "Возраст"]
-    table_data = [
-        [1, "Алексей", 25],
-        [2, "Мария", 30],
-        [3, "Иван", 22]
-    ]
+components_types = {'computer_cases': computer_cases.ComputerCases,
+                    'cooling_systems': cooling_systems.CoolingSystems,
+                    'memory_types': memory_types.MemoryTypes,
+                    'motherboards': motherboards.MotherBoards,
+                    'power_supplies': power_supplies.PowerSupplies,
+                    'processors': processors.Processors,
+                    'ram_modules': ram_modules.RamModules,
+                    'sockets': sockets.Sockets,
+                    'storage_devices': storage_devices.StorageDevices,
+                    'videocards': videocards.Videocards}
 
-    return render_template('table.html',
+
+@app.route('/components/<components_type>')
+def show_components(components_type):
+    component_type = components_types[components_type]
+
+    db_sess = db_session.create_session()
+    components = db_sess.query(component_type).all()
+
+    inspector = inspect(component_type)
+    columns = [column.name for column in inspector.mapper.columns]
+
+    return render_template('components_table.html',
                            user=user,
-                           headers=table_headers,
-                           data=table_data)
+                           keys=columns,
+                           components=components)
 
 
 if __name__ == '__main__':

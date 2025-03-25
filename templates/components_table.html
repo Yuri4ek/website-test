@@ -3,11 +3,11 @@
 {% block content %}
 <table>
     <!-- Если есть заголовки -->
-    {% if headers %}
+    {% if keys %}
     <thead>
         <tr>
-            {% for header in headers %}
-                <th>{{ header }}</th>
+            {% for key in keys %}
+                <th>{{ key }}</th>
             {% endfor %}
         </tr>
     </thead>
@@ -15,10 +15,10 @@
 
     <!-- Динамическое содержимое таблицы -->
     <tbody>
-        {% for row in data %}
+        {% for component in components %}
         <tr>
-            {% for cell in row %}
-                <td>{{ cell }}</td>
+            {% for el in component.get() %}
+                <td>{{ el }}</td>
             {% endfor %}
         </tr>
         {% endfor %}
