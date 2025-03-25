@@ -16,7 +16,7 @@ def home():
     return render_template('main.html', user=user)
 
 
-@app.route('/components/<string:components_id>')
+@app.route('/components/<int:components_id>')
 def show_components(components_id):
     # Пример данных
     table_headers = ["ID", "Имя", "Возраст"]
