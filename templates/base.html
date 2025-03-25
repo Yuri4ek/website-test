@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Computer Configuration</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/base_style.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -26,14 +26,14 @@
                     <a href="/components/cooling_systems">Охлаждение процессора</a>
                 </div>
             </div>
-            <a href="builds">Сборки</a>
+            <a href="/builds">Сборки</a>
         </div>
         <div class="nav-right">
             {% if user.is_logged_in %}
-                <a href="profile" class="btn">{{ user.username }}</a>
+                <a href="/profile" class="btn">{{ user.username }}</a>
             {% else %}
-                <a href="login" class="btn">Войти</a>
-                <a href="register" class="btn">Зарегистрироваться</a>
+                <a href="/login" class="btn">Войти</a>
+                <a href="/register" class="btn">Зарегистрироваться</a>
             {% endif %}
         </div>
     </div>

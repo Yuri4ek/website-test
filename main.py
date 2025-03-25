@@ -38,9 +38,11 @@ components_types = {'computer_cases': computer_cases.ComputerCases,
 def show_components(components_type):
     component_type = components_types[components_type]
 
+    # все компоненты
     db_sess = db_session.create_session()
     components = db_sess.query(component_type).all()
 
+    # название колонн
     inspector = inspect(component_type)
     columns = [column.name for column in inspector.mapper.columns]
 
@@ -48,6 +50,11 @@ def show_components(components_type):
                            user=user,
                            keys=columns,
                            components=components)
+
+
+@app.route('/builds')
+def show_builds():
+    return render_template('builds.html', user=user)
 
 
 if __name__ == '__main__':
