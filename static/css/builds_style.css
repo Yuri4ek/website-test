@@ -1,17 +1,23 @@
+body {
+    background-color: #f0f0f0; /* Фон страницы */
+    margin: 0; /* Убираем стандартные отступы */
+}
+
 .container {
-    width: 100%; /* Вся ширина экрана */
+    width: 100%;
     margin: 0;
     padding: 20px;
-    padding-top: 40px; /* Отступ сверху */
+    padding-top: 40px;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Позволяет добавлять ряды вниз */
     gap: 20px;
-    justify-content: center; /* Центрирование блоков */
+    justify-content: center;
     box-sizing: border-box;
 }
 
 .pc-block {
     width: calc(33.33% - 14px); /* Три блока в ряд */
+    background-color: #ffffff; /* Белый фон для блоков */
     border: 1px solid #ccc;
     padding: 15px;
     box-sizing: border-box;
@@ -74,13 +80,13 @@
 
 @media (max-width: 768px) {
     .pc-block {
-        width: calc(50% - 10px); /* Два блока на средних экранах */
+        width: calc(50% - 10px);
     }
 }
 
 @media (max-width: 480px) {
     .pc-block {
-        width: 100%; /* Один блок на маленьких экранах */
+        width: 100%;
     }
     .content {
         flex-direction: column;
