@@ -1,6 +1,6 @@
 body {
     background-color: #f0f0f0; /* Фон страницы */
-    margin: 0; /* Убираем стандартные отступы */
+    margin: 0;
 }
 
 .container {
@@ -9,21 +9,22 @@ body {
     padding: 20px;
     padding-top: 40px;
     display: flex;
-    flex-wrap: wrap; /* Позволяет добавлять ряды вниз */
+    flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
     box-sizing: border-box;
 }
 
 .pc-block {
-    width: calc(33.33% - 14px); /* Три блока в ряд */
-    background-color: #ffffff; /* Белый фон для блоков */
+    width: calc(33.33% - 14px);
+    background-color: #ffffff; /* Белый фон блока */
     border: 1px solid #ccc;
     padding: 15px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     min-height: 450px;
+    border-radius: 10px; /* Закругленные углы блока */
 }
 
 .header {
@@ -36,13 +37,14 @@ body {
 }
 
 .nickname-btn {
-    background-color: #808080;
+    background-color: #666; /* Цвет кнопки */
     color: white;
     padding: 8px;
     border: none;
     cursor: pointer;
     flex-shrink: 0;
     margin-bottom: 10px;
+    border-radius: 15px; /* Закругленные углы кнопки */
 }
 
 .title-budget {

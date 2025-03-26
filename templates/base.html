@@ -10,7 +10,7 @@
     <!-- Navbar -->
     <div class="navbar">
         <div class="nav-left">
-            <a href="/">Конфигурация</a>
+            <a href="/">Конфигуратор</a>
             <div class="dropdown">
                 <a href="" class="dropbtn">Комплектующие</a>
                 <div class="dropdown-content">
@@ -26,7 +26,13 @@
                     <a href="/components/cooling_systems">Охлаждение процессора</a>
                 </div>
             </div>
-            <a href="/builds">Сборки</a>
+            <div class="dropdown">
+                <a href="/builds" class="dropbtn">Конфигурации</a>
+                <div class="dropdown-content">
+                    <a href="/builds" class="dropbtn">Конфигурации</a>
+                    <a href="/make_builds">Создать Конфигурацию</a>
+                </div>
+            </div>
         </div>
         <div class="nav-right">
             {% if user.is_logged_in %}
