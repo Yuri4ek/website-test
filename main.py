@@ -11,7 +11,7 @@ db_session.global_init("db/components.db")
 # Имитация данных пользователя (в реальном приложении это будет из базы данных)
 # Для теста можно менять значения
 user = {
-    "is_logged_in": True,
+    "is_logged_in": False,
     # Измените на True, чтобы протестировать авторизованного пользователя
     "username": "User123"
 }
@@ -55,6 +55,16 @@ def show_components(components_type):
 @app.route('/builds')
 def show_builds():
     return render_template('builds.html', user=user)
+
+
+@app.route('/login')
+def authorization():
+    return render_template('authorization.html', user=user)
+
+
+@app.route('/register')
+def registration():
+    return render_template('registration.html', user=user)
 
 
 if __name__ == '__main__':
