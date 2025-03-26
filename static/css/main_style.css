@@ -1,27 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
 /* Main container */
 .container {
-    margin-top: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    min-height: calc(100vh - 80px);
+    min-height: 100vh;
     background-color: #f0f0f0;
+}
+
+/* Components container */
+.components-container {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Blocks */
 .block {
     width: 150px;
     padding: 18.75px;
-    border: 2px solid #000;
-    background-color: #fff;
+    background-color: #666;
+    color: white;
+    border-radius: 10px;
+    border: none;
     margin: 12.5px;
     text-align: center;
     cursor: pointer;
     font-size: 20px;
 }
 .block:hover {
-    background-color: #e0e0e0;
+    background-color: #444; /* Чуть светлее #555 при наведении */
 }
 .row {
     display: flex;
@@ -35,15 +54,17 @@
 .motherboard {
     width: 488px;
     padding: 18.75px;
-    border: 2px solid #000;
-    background-color: #fff;
+    background-color: #666;
+    color: white;
+    border-radius: 10px;
+    border: none;
     margin: 12.5px;
     text-align: center;
     cursor: pointer;
     font-size: 20px;
 }
 .motherboard:hover {
-    background-color: #e0e0e0;
+    background-color: #444;
 }
 
 /* Adjust CPU and CPU Cooler to be centered above Motherboard */
@@ -72,7 +93,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0,0,0,0.5);
 }
 .modal-content {
     background-color: #fff;
