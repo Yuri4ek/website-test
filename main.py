@@ -22,6 +22,12 @@ def home():
     return render_template('main.html', user=user)
 
 
+@app.route('/choose_components/<components_type>')
+def choose_components(components_type):
+    return render_template('search_components.html',
+                           user=user,)
+
+
 components_types = {'computer_cases': computer_cases.ComputerCases,
                     'cooling_systems': cooling_systems.CoolingSystems,
                     'memory_types': memory_types.MemoryTypes,
@@ -35,7 +41,7 @@ components_types = {'computer_cases': computer_cases.ComputerCases,
 
 
 @app.route('/components/<components_type>')
-def show_components(components_type):
+def show_components_table(components_type):
     component_type = components_types[components_type]
 
     # все компоненты

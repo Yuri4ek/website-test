@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/css/components_style.css">
+
+<div class="container">
+    <div class="filters">
+        <h3>Фильтры</h3>
+        <div>
+            <label><input type="checkbox"> Процессоры</label><br>
+            <label><input type="checkbox"> Видеокарты</label><br>
+            <label><input type="checkbox"> Оперативная память</label><br>
+            <label><input type="checkbox"> Материнские платы</label>
+        </div>
+        <h4>Цена</h4>
+        <input type="range" min="0" max="100000" value="50000">
+    </div>
+    <div class="right-section">
+        <div class="search-bar">
+            <input type="text" placeholder="Поиск комплектующих...">
+            <button>Поиск</button>
+        </div>
+        <div class="components">
+            <div class="component-item">
+                <div class="component-image"></div>
+                <div class="component-info">
+                    <h3>Процессор Intel Core i7-12700K</h3>
+                    <p>Ядра: 12</p>
+                    <p>Потоки: 20</p>
+                    <p>Частота: 3.6 ГГц (5.0 ГГц Turbo)</p>
+                    <p>Сокет: LGA 1700</p>
+                </div>
+            </div>
+            <div class="component-item">
+                <div class="component-image"></div>
+                <div class="component-info">
+                    <h3>Видеокарта NVIDIA RTX 4080</h3>
+                    <p>Память: 16 ГБ GDDR6X</p>
+                    <p>Шина: 256-бит</p>
+                    <p>Частота ядра: 2500 МГц</p>
+                    <p>Разъемы: HDMI, 3x DP</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
